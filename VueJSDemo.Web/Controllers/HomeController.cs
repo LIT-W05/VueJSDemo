@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using VueJSDemo.Data;
 
 namespace VueJSDemo.Web.Controllers
 {
@@ -13,18 +14,37 @@ namespace VueJSDemo.Web.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult People()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult GetAll()
         {
-            ViewBag.Message = "Your contact page.";
+            var repo = new PeopleRepository(Properties.Settings.Default.ConStr);
+            return Json(repo.GetAll(), JsonRequestBehavior.AllowGet);
+        }
 
-            return View();
+        [HttpPost]
+        public void AddPerson(Person person)
+        {
+            var repo = new PeopleRepository(Properties.Settings.Default.ConStr);
+            repo.Add(person);
+        }
+
+        [HttpPost]
+        public void Update(Person person)
+        {
+            var repo = new PeopleRepository(Properties.Settings.Default.ConStr);
+            repo.Update(person);
+        }
+
+        [HttpPost]
+        public void Delete(int id)
+        {
+            var repo = new PeopleRepository(Properties.Settings.Default.ConStr);
+            repo.Delete(id);
         }
     }
+
 }
