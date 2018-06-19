@@ -1,6 +1,6 @@
 ﻿new Vue({
     el: '#app',
-    mounted: function () {
+    mounted: function() {
         this.loadPeople();
     },
     data: {
@@ -10,7 +10,8 @@
             LastName: '',
             Age: ''
         },
-        isEditMode: false
+        isEditMode: false,
+        sortAsc: 1
     },
     methods: {
         loadPeople: function (cb) {
@@ -21,6 +22,7 @@
                 }
             });
         },
+
         newClick: function() {
             $(".modal").modal();
             this.isEditMode = false;
@@ -62,6 +64,11 @@
             $.post('/home/delete', {id}, () => {
                 this.loadPeople();
             });
+        },
+
+        sortClick: function() {
+            this.people.sort((a, b) => (a.Age - b.Age) * this.sortAsc);
+            this.sortAsc *= -1;
         }
     }
 });
